@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+      - synchronize
 
 jobs:
   simple_deployment_pipeline:
@@ -28,12 +34,13 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
       - name: deploy to heroku
+        if: ${{ github.event_name == 'push' }}
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
-            heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-            heroku_app_name: "fullstack-helsinki-2021-part11"
-            heroku_email: "duy.a.pham@aalto.fi"
-            healthcheck: "https://fullstack-helsinki-2021-part11.herokuapp.com/health"
-            checkstring: "ok"
-            delay: 5
-            rollbackonhealthcheckfailed: true
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "fullstack-helsinki-2021-part11"
+          heroku_email: "duy.a.pham@aalto.fi"
+          healthcheck: "https://fullstack-helsinki-2021-part11.herokuapp.com/health"
+          checkstring: "ok"
+          delay: 5
+          rollbackonhealthcheckfailed: true
