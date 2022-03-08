@@ -44,6 +44,30 @@ jobs:
           checkstring: "ok"
           delay: 5
           rollbackonhealthcheckfailed: true
+      - name: push success discord notification
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          description: to https://fullstack-helsinki-2021-part11.herokuapp.com/
+          text: A new version of Pokedex deployed
+          webhookUrl: ${{ secrets.DISCORD_WEB_HOOK_URL }}
+      - name: push failure discord notification
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        with:
+          severity: error
+          description: commit ${{ join(github.event.commits.*.tree_id, ' ') }} broke the build
+          text: Build failed
+          webhookUrl: ${{ secrets.DISCORD_WEB_HOOK_URL }}
+      - name: push cancelled discord notification
+        uses: rjstone/discord-webhook-notify@v1
+        if: cancelled()
+        with:
+          severity: warn
+          description: build for commit ${{ join(github.event.commits.*.tree_id, ' ') }} is cancelled
+          text: Build cancelled
+          webhookUrl: ${{ secrets.DISCORD_WEB_HOOK_URL }}
   tag_release:
     if: ${{ !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     needs:
