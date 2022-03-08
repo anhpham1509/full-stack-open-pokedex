@@ -28,6 +28,10 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
+      - name: test skip boolean
+        env:
+          IS_SKIP_COMMIT: ${{ contains(join(github.event.commits.*.message, ' '), '#skip') }}
+        run: echo "$IS_SKIP_COMMIT"
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
     steps:
