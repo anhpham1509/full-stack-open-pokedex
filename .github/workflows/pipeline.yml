@@ -65,7 +65,7 @@ jobs:
         if: cancelled()
         with:
           severity: warn
-          description: build for commit ${{ join(github.event.commits.*.tree_id, ' ') }} is cancelled
+          description: for commit ${{ join(github.event.commits.*.tree_id, ' ') }} is cancelled
           text: Build cancelled
           webhookUrl: ${{ secrets.DISCORD_WEB_HOOK_URL }}
   tag_release:

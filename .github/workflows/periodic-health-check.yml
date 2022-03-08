@@ -1,9 +1,8 @@
 name: Periodic health check
 
 on:
-  push:
-    branches:
-      - master
+  schedule:
+    - cron:  '0 13 * * * *'
 
 jobs:
   periodic_health_check:
@@ -14,6 +13,6 @@ jobs:
         with:
           url: https://fullstack-helsinki-2021-part11.herokuapp.com/health|https://fullstack-helsinki-2021-part11.herokuapp.com
           follow-redirect: true
-          max-attempts: 3
+          max-attempts: 2
           retry-delay: 5s
           retry-all: false
