@@ -2,7 +2,7 @@ name: Periodic health check
 
 on:
   schedule:
-    - cron:  '0 11 * * *'
+    - cron:  '* 11 * * *'
 
 jobs:
   periodic_health_check:
