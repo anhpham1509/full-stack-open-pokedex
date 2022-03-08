@@ -1,0 +1,19 @@
+name: Periodic health check
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  periodic_health_check:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check the deployed service URL
+        uses: jtalk/url-health-check-action@v2
+        with:
+          url: https://fullstack-helsinki-2021-part11.herokuapp.com/health|https://fullstack-helsinki-2021-part11.herokuapp.com
+          follow-redirect: true
+          max-attempts: 3
+          retry-delay: 5s
+          retry-all: false
